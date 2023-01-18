@@ -1,13 +1,13 @@
 // Copyright (c) 2020 FHNW, Switzerland. All rights reserved.
 // Licensed under MIT License, see LICENSE for details.
 
-package ch.fhnw.imvs.bricks.sensors;
+package main.java.ch.fhnw.imvs.bricks.sensors;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import ch.fhnw.imvs.bricks.core.Brick;
-import ch.fhnw.imvs.bricks.core.Proxy;
+import main.java.ch.fhnw.imvs.bricks.core.Brick;
+import main.java.ch.fhnw.imvs.bricks.core.Proxy;
 
 public final class DistanceBrick extends Brick {
     private DistanceBrick(Proxy proxy, String brickID) {

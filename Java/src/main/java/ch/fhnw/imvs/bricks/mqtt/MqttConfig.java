@@ -1,7 +1,7 @@
 // Copyright (c) 2020 FHNW, Switzerland. All rights reserved.
 // Licensed under MIT License, see LICENSE for details.
 
-package ch.fhnw.imvs.bricks.mqtt;
+package main.java.ch.fhnw.imvs.bricks.mqtt;
 
 /* package */ final class MqttConfig {
     private MqttConfig() {}

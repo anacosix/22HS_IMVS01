@@ -1,13 +1,16 @@
 // Copyright (c) 2020 FHNW, Switzerland. All rights reserved.
 // Licensed under MIT License, see LICENSE for details.
 
-package ch.fhnw.imvs.bricks.mqtt;
+package main.java.ch.fhnw.imvs.bricks.mqtt;
 
+import main.java.ch.fhnw.imvs.bricks.core.Proxy;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import ch.fhnw.imvs.bricks.core.Brick;
-import ch.fhnw.imvs.bricks.core.Proxy;
+import main.java.ch.fhnw.imvs.bricks.core.Brick;
+import main.java.ch.fhnw.imvs.bricks.core.Proxy;
+
+import java.io.IOException;
 
 public final class MqttProxy extends Proxy {
     private MqttProxy(MqttConfig config) {
@@ -20,9 +23,11 @@ public final class MqttProxy extends Proxy {
 
     // calLed exactly once
     private void connect() {
+        System.out.println("connect");
         String host = mqttConfig.getHost();
         String username = mqttConfig.getUsername();
         String password = mqttConfig.getPassword();
+        System.out.println(host);
         mqttService.init(host, username, password);
         mqttService.connect();
     }
@@ -42,7 +47,7 @@ public final class MqttProxy extends Proxy {
     }
 
     @Override
-    protected void syncBrick(Brick brick) {
+    protected void syncBrick(Brick brick) throws IOException {
         byte[] payload = super.getTargetPayload(brick, false); // not a mock
         String topic = mqttConfig.getPublishTopic(brick.getID());
         mqttService.publish(topic, payload);

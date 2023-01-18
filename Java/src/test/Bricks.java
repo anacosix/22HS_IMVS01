@@ -1,4 +1,4 @@
-// Copyright (c) 2020 FHNW, Switzerland. All rights reserved.
+package test;// Copyright (c) 2020 FHNW, Switzerland. All rights reserved.
 // Licensed under MIT License, see LICENSE for details.
 
 // $ cd Java
@@ -27,27 +27,27 @@ import java.awt.Color;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Locale;
+import java.awt.Image;
+import javax.swing.JFrame;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
-import ch.fhnw.imvs.bricks.core.Proxy;
+import main.java.ch.fhnw.imvs.bricks.actuators.*;
+import main.java.ch.fhnw.imvs.bricks.core.Proxy;
 
-import ch.fhnw.imvs.bricks.http.HttpProxy;
-import ch.fhnw.imvs.bricks.mock.MockProxy;
-import ch.fhnw.imvs.bricks.mqtt.MqttProxy;
-import ch.fhnw.imvs.bricks.mqtt.TtnMqttProxy;
+import main.java.ch.fhnw.imvs.bricks.http.HttpProxy;
+import main.java.ch.fhnw.imvs.bricks.mock.MockProxy;
+import main.java.ch.fhnw.imvs.bricks.mqtt.MqttProxy;
+import main.java.ch.fhnw.imvs.bricks.mqtt.TtnMqttProxy;
 
-import ch.fhnw.imvs.bricks.sensors.ButtonBrick;
-import ch.fhnw.imvs.bricks.sensors.DistanceBrick;
-import ch.fhnw.imvs.bricks.sensors.HumiTempBrick;
-import ch.fhnw.imvs.bricks.sensors.PresenceBrick;
-
-import ch.fhnw.imvs.bricks.actuators.BuzzerBrick;
-import ch.fhnw.imvs.bricks.actuators.ColorLedBrick;
-import ch.fhnw.imvs.bricks.actuators.DisplayBrick;
-import ch.fhnw.imvs.bricks.actuators.RelayBrick;
+import main.java.ch.fhnw.imvs.bricks.sensors.ButtonBrick;
+import main.java.ch.fhnw.imvs.bricks.sensors.DistanceBrick;
+import main.java.ch.fhnw.imvs.bricks.sensors.HumiTempBrick;
+import main.java.ch.fhnw.imvs.bricks.sensors.PresenceBrick;
+import main.java.ch.fhnw.imvs.bricks.sensors.CameraBrick;
 
 public final class Bricks {
     private Bricks() {}
-
     private static final String BUTTON_BRICK_ID = "0000-0002";
     private static final String BUZZER_BRICK_ID = "0000-0006";
     private static final String COLORLED_BRICK_ID = "0000-0000";
@@ -59,8 +59,10 @@ public final class Bricks {
     private static final String HUMITEMP_BRICK_2_ID = "0000-0004";
     private static final String PRESENCE_BRICK_0_ID = "0000-0020";
     private static final String PRESENCE_BRICK_1_ID = "0000-0021";
+    private static final String CAMERA_BRICK_ID = "0000-0009";
+    private static final String LCDDISPLAY_BRICK_ID = "0000-0010";
 
-    private static void runDoorbellExample(Proxy proxy) {
+    private static void runDoorbellExample(Proxy proxy) throws IOException {
         ButtonBrick buttonBrick = ButtonBrick.connect(proxy, BUTTON_BRICK_ID);
         BuzzerBrick buzzerBrick = BuzzerBrick.connect(proxy, BUZZER_BRICK_ID);
         while (true) {
@@ -72,7 +74,7 @@ public final class Bricks {
         }
     }
 
-    private static void runLoggingExample(Proxy proxy) {
+    private static void runLoggingExample(Proxy proxy) throws IOException {
         HumiTempBrick brick = HumiTempBrick.connect(proxy, HUMITEMP_BRICK_ID);
         FileWriter fileWriter = null;
         try {
@@ -96,7 +98,7 @@ public final class Bricks {
         }
     }
 
-    private static void runLoggingArrayExample(Proxy proxy) {
+    private static void runLoggingArrayExample(Proxy proxy) throws IOException {
         HumiTempBrick[] bricks = new HumiTempBrick[3];
         bricks[0] = HumiTempBrick.connect(proxy, HUMITEMP_BRICK_0_ID);
         bricks[1] = HumiTempBrick.connect(proxy, HUMITEMP_BRICK_1_ID);
@@ -115,9 +117,9 @@ public final class Bricks {
         }
     }
 
-    private static void runMonitoringExample(Proxy proxy) {
+    private static void runMonitoringExample(Proxy proxy) throws IOException {
         HumiTempBrick humiTempBrick = HumiTempBrick.connect(proxy, HUMITEMP_BRICK_ID);
-        DisplayBrick displayBrick = DisplayBrick.connect(proxy, DISPLAY_BRICK_ID);
+        NumberDisplayBrick displayBrick = NumberDisplayBrick.connect(proxy, DISPLAY_BRICK_ID);
         while (true) {
             double temp = humiTempBrick.getTemperature();
             String time = humiTempBrick.getTimestampIsoUtc();
@@ -128,7 +130,7 @@ public final class Bricks {
         }
     }
 
-    private static void runParkingExample(Proxy proxy) {
+    private static void runParkingExample(Proxy proxy) throws IOException {
         DistanceBrick distBrick = DistanceBrick.connect(proxy, DISTANCE_BRICK_ID);
         ColorLedBrick colorLedBrick = ColorLedBrick.connect(proxy, COLORLED_BRICK_ID);
         while (true) {
@@ -142,7 +144,7 @@ public final class Bricks {
         }  
     }
 
-    private static void runSwitchExample(Proxy proxy) {
+    private static void runSwitchExample(Proxy proxy) throws IOException {
         ButtonBrick buttonBrick = ButtonBrick.connect(proxy, BUTTON_BRICK_ID);
         RelayBrick relayBrick = RelayBrick.connect(proxy, BUZZER_BRICK_ID);
         int state = 0;
@@ -164,11 +166,11 @@ public final class Bricks {
         }
     }
 
-    private static void runFoosballExample(Proxy proxy) {
+    private static void runFoosballExample(Proxy proxy) throws IOException {
         ButtonBrick buttonBrick = ButtonBrick.connect(proxy, BUTTON_BRICK_ID);
         PresenceBrick presenceBrick0 = PresenceBrick.connect(proxy, PRESENCE_BRICK_0_ID);
         PresenceBrick presenceBrick1 = PresenceBrick.connect(proxy, PRESENCE_BRICK_1_ID);
-        DisplayBrick displayBrick = DisplayBrick.connect(proxy, DISPLAY_BRICK_ID);
+        NumberDisplayBrick displayBrick = NumberDisplayBrick.connect(proxy, DISPLAY_BRICK_ID);
 
         double score = 00.00;
         while (true) {
@@ -191,9 +193,41 @@ public final class Bricks {
         }
     }
 
-    public static void main(String args[]) {
+    private static void runCameraExample(Proxy proxy) throws IOException {
+        CameraBrick cameraBrick = CameraBrick.connect(proxy, CAMERA_BRICK_ID);
+        var frame = new JFrame();
+        while (true) {
+            Image currentImage = cameraBrick.getImage();
+            Image dimg = currentImage.getScaledInstance(200, 200,
+                    Image.SCALE_SMOOTH);
+            var icon = new ImageIcon(dimg);
+            var label = new JLabel(icon);
+            frame.add(label);
+            frame.setDefaultCloseOperation
+                    (JFrame.EXIT_ON_CLOSE);
+            frame.pack();
+            frame.setVisible(true);
+            proxy.waitForUpdate();
+            frame.remove(label);
+            frame.revalidate();
+            frame.repaint();
+        }
+    }
+
+    private static void runLCDDisplayExample(Proxy proxy) throws IOException {
+        CameraBrick cameraBrick = CameraBrick.connect(proxy, CAMERA_BRICK_ID);
+        LcdDisplayBrick lcdDisplayBrick = LcdDisplayBrick.connect(proxy, LCDDISPLAY_BRICK_ID);
+        while (true) {
+            Image currentImage = cameraBrick.getImage();
+            lcdDisplayBrick.setSize(128,128);
+            lcdDisplayBrick.setImage(currentImage);
+            proxy.waitForUpdate();
+        }
+    }
+
+    public static void main(String args[]) throws IOException {
         final String BASE_URL = "https://brick.li";
-        final String USAGE = "usage: java Bricks http|mock|mqtt|ttn d|l|a|m|p|s|f";
+        final String USAGE = "usage: java Bricks http|mock|mqtt|ttn d|l|a|m|p|s|f|c|y";
         if (args.length == 2) {
             Proxy proxy = null;
             if ("http".equals(args[0])) {
@@ -222,9 +256,13 @@ public final class Bricks {
                 runSwitchExample(proxy);
             } else if ("f".equals(args[1])) {
                 runFoosballExample(proxy);
-            } else {
-                System.out.println(USAGE);
-                System.exit(-1);
+            } else if ("c".equals(args[1])) {
+                runCameraExample(proxy);
+            } else if("y".equals(args[1])){
+                runLCDDisplayExample(proxy);
+            } else{
+                    System.out.println(USAGE);
+                    System.exit(-1);
             }
         } else {
             System.out.println(USAGE);

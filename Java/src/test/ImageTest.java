@@ -1,3 +1,5 @@
+package test;
+
 import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;

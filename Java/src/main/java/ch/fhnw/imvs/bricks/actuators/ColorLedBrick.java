@@ -1,14 +1,15 @@
 // Copyright (c) 2020 FHNW, Switzerland. All rights reserved.
 // Licensed under MIT License, see LICENSE for details.
 
-package ch.fhnw.imvs.bricks.actuators;
+package main.java.ch.fhnw.imvs.bricks.actuators;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import ch.fhnw.imvs.bricks.core.Brick;
-import ch.fhnw.imvs.bricks.core.Proxy;
+import main.java.ch.fhnw.imvs.bricks.core.Brick;
+import main.java.ch.fhnw.imvs.bricks.core.Proxy;
 
 public final class ColorLedBrick extends Brick {
     private ColorLedBrick(Proxy proxy, String brickID) {
@@ -22,7 +23,7 @@ public final class ColorLedBrick extends Brick {
 //        return currentColor;
 //    }
 
-    public void setColor(Color color) {
+    public void setColor(Color color) throws IOException {
         if (!targetColor.equals(color)) {
             targetColor = color;
             super.sync();

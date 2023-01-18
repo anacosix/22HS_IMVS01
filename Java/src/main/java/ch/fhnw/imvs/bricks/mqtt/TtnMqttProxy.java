@@ -1,16 +1,18 @@
 // Copyright (c) 2020 FHNW, Switzerland. All rights reserved.
 // Licensed under MIT License, see LICENSE for details.
 
-package ch.fhnw.imvs.bricks.mqtt;
+package main.java.ch.fhnw.imvs.bricks.mqtt;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import ch.fhnw.imvs.bricks.core.Brick;
-import ch.fhnw.imvs.bricks.core.Proxy;
+import main.java.ch.fhnw.imvs.bricks.core.Brick;
+import main.java.ch.fhnw.imvs.bricks.core.Proxy;
+import main.java.ch.fhnw.imvs.bricks.mqtt.TtnMqttConfig;
 
 // TtnMqttProxy knows how to (un)pack TTN LoRaWAN / MQTT payload.
 
@@ -59,7 +61,7 @@ public final class TtnMqttProxy extends Proxy {
     }
 
     @Override
-    protected void syncBrick(Brick brick) {
+    protected void syncBrick(Brick brick) throws IOException {
         byte[] ttnLoRaPayloadBytes = super.getTargetPayload(brick, false); // not a mock
         String ttnLoRaPayloadBase64 = Base64.getEncoder().encodeToString(ttnLoRaPayloadBytes);
         String ttnMqttPayloadJson = 

@@ -1,16 +1,17 @@
 // Copyright (c) 2020 FHNW, Switzerland. All rights reserved.
 // Licensed under MIT License, see LICENSE for details.
 
-package ch.fhnw.imvs.bricks.actuators;
+package main.java.ch.fhnw.imvs.bricks.actuators;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import ch.fhnw.imvs.bricks.core.Brick;
-import ch.fhnw.imvs.bricks.core.Proxy;
+import main.java.ch.fhnw.imvs.bricks.core.Brick;
+import main.java.ch.fhnw.imvs.bricks.core.Proxy;
 
-public final class DisplayBrick extends Brick {
-    private DisplayBrick(Proxy proxy, String brickID) {
+public final class NumberDisplayBrick extends Brick {
+    private NumberDisplayBrick(Proxy proxy, String brickID) {
         super(proxy, brickID);
     }
 
@@ -24,7 +25,7 @@ public final class DisplayBrick extends Brick {
 //        return currentdecimalPlaces;
 //    }
 
-    public void setDecimalPlaces(int value) {
+    public void setDecimalPlaces(int value) throws IOException {
         if (value != 0 && value != 2) {
             throw new IllegalArgumentException();
         }
@@ -38,7 +39,7 @@ public final class DisplayBrick extends Brick {
 //        return currentDoubleValue;
 //    }
 
-    public void setDoubleValue(double value) {
+    public void setDoubleValue(double value) throws IOException {
         if (targetDoubleValue != value) {
             targetDoubleValue = value;
             super.sync();
@@ -67,8 +68,8 @@ public final class DisplayBrick extends Brick {
         currentDoubleValue = buf.getShort() / Math.pow(10, currentDecimalPlaces);
     }
 
-    public static DisplayBrick connect(Proxy proxy, String brickID) {
-        DisplayBrick brick = new DisplayBrick(proxy, brickID);
+    public static NumberDisplayBrick connect(Proxy proxy, String brickID) {
+        NumberDisplayBrick brick = new NumberDisplayBrick(proxy, brickID);
         brick.connect();
         return brick;
     }

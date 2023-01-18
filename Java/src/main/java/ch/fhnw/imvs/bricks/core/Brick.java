@@ -1,8 +1,9 @@
 // Copyright (c) 2020 FHNW, Switzerland. All rights reserved.
 // Licensed under MIT License, see LICENSE for details.
 
-package ch.fhnw.imvs.bricks.core;
+package main.java.ch.fhnw.imvs.bricks.core;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,20 +50,20 @@ public abstract class Brick {
         proxy.connectBrick(this);
     }
 
-    protected void sync() { // called by Brick subclasses
+    protected void sync() throws IOException { // called by Brick subclasses
         proxy.syncBrick(this);
     }
 
-    protected abstract byte[] getTargetPayload(boolean mock); // called by Proxy base
+    protected abstract byte[] getTargetPayload(boolean mock) throws IOException; // called by Proxy base
 
     /* package */ void setPendingPayload(byte[] payload) { // called by Proxy base
         pendingTimestamp = new Date();
         pendingPayload = payload;
     }
 
-    protected abstract void setCurrentPayload(byte[] payload); // called below
+    protected abstract void setCurrentPayload(byte[] payload) throws IOException; // called below
 
-    /* package */ boolean tryUpdate() { // called by Proxy base
+    /* package */ boolean tryUpdate() throws IOException { // called by Proxy base
         boolean updated;
         if (currentTimestamp.before(pendingTimestamp)) {
             currentTimestamp = pendingTimestamp;

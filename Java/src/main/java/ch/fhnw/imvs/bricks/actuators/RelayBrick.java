@@ -1,10 +1,12 @@
 // Copyright (c) 2022 FHNW, Switzerland. All rights reserved.
 // Licensed under MIT License, see LICENSE for details.
 
-package ch.fhnw.imvs.bricks.actuators;
+package main.java.ch.fhnw.imvs.bricks.actuators;
 
-import ch.fhnw.imvs.bricks.impl.DigitalOutputBrick;
-import ch.fhnw.imvs.bricks.core.Proxy;
+import main.java.ch.fhnw.imvs.bricks.impl.DigitalOutputBrick;
+import main.java.ch.fhnw.imvs.bricks.core.Proxy;
+
+import java.io.IOException;
 
 public final class RelayBrick extends DigitalOutputBrick {
     private RelayBrick(Proxy proxy, String brickID) {
@@ -15,7 +17,7 @@ public final class RelayBrick extends DigitalOutputBrick {
 //        return super.isActive();
 //    }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(boolean enabled) throws IOException {
         super.setActive(enabled);
     }
 
